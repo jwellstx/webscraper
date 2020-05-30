@@ -25,17 +25,18 @@ const ArticleSchema = new Schema({
     type: String,
     required: true
   },
-  active: {
+  active: { // used to let the page know which articles are the current active scraped articles
     type: Boolean,
     required: true
   },
-  saved: {
+  saved: { // used to say which articles a user has saved
     type: Boolean,
     default: false
   },
   // `note` is an object that stores a Note id
   // The ref property links the ObjectId to the Note model
   // This allows us to populate the Article with an associated Note
+  // !!! [] is important if we are going to $push multiple notes
   note: [{
     type: Schema.Types.ObjectId,
     ref: "Note"

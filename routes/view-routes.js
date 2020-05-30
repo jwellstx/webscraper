@@ -10,6 +10,7 @@ module.exports = function (app) {
         });
     });
 
+    // when "saved articles" clicked, show all documents that have saved:true
     app.get("/savedArticles", (req, res) => {
         db.Article.find({saved: true}).then(resp => {
             res.render("notes", {results: resp.map(article => article.toJSON())})
