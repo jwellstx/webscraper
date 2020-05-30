@@ -1,0 +1,59 @@
+body {
+    background-color: grey;
+}
+
+#title {
+    float: right;
+    font-size: 7vw;
+    color: rgb(80, 32, 32); 
+    font-family: 'Bangers', sans-serif;
+    -webkit-text-stroke-width: 2px; 
+    -webkit-text-stroke-color: white;
+    position: relative;
+    top: 50vh;
+}
+
+.navbarsettings {
+    margin-bottom:15%;
+    background-color: rgb(80, 32, 32);
+    color: white;
+    font-family: 'Bangers', sans-serif;
+    font-size: 150%;
+    -webkit-text-stroke-color: white;
+}
+
+.nav-item,.navbar-brand {
+    color: white;
+}
+
+.nav-item:hover, .navbar-brand:hover, .toggler {
+    color: white;
+}
+
+.toggler {
+    background-color: white;
+}
+
+#bgimg {
+    position: relative; 
+    top: -5vh;
+}
+
+#articles {
+    position: relative; 
+    top: -15vh;
+}
+
+.jumbotron {
+    background-image: url("../img/bgimg.jpg");
+    background-size: cover;
+    height: 150vh;
+}
+
+.brand {
+    font-size: 180%
+}
+
+.noteIt, .saveIt {
+    float: right;
+}

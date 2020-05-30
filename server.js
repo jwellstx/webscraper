@@ -1,34 +1,34 @@
-var express = require("express");
-var exphbs = require("express-handlebars");
+// used to handle routes and display pages
+const express = require("express");
+const exphbs = require("express-handlebars");
+// for connection to DB
+const mongoose = require("mongoose");
 
-// var db = require("./models");
+// Require models
+const db = require("./models");
 
-var app = express();
-var PORT = process.env.PORT || 3000;
+// Init express app
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 // Middleware
-//app.use(flash());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));
 
 // Handlebars
-app.engine(
-    "handlebars",
-    exphbs({
-        defaultLayout: "main"
-    })
-);
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-app.get("/", (req, res) => {
-    res.render("index");
-})
+// connect to mongo db
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/scraper";
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
+mongoose.set('useCreateIndex', true);
+
+// routes - make a routing file later
+require("./routes/api-routes.js")(app);
+require("./routes/view-routes.js")(app);
 
 app.listen(PORT, function () {
-    console.log(
-        "==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.",
-        PORT,
-        PORT
-    );
-})
+    console.log("==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.", PORT, PORT);
+});
