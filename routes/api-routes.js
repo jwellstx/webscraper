@@ -55,8 +55,6 @@ module.exports = function (app) {
     });
 
     app.post("/saveArticle", (req, res) => {
-        // 5ed19e8ed548c8b31f57a6c7
-        console.log("id to save: " + req.body.id);
         db.Article.updateOne({ _id: req.body.id }, { $set: { saved: true } })
             .then(dbData => {
                 res.redirect("/");
@@ -72,7 +70,7 @@ module.exports = function (app) {
                 // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
                 // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
                 // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
-                return db.Article.findOneAndUpdate({_id: req.body.id }, { $push: { note: dbNote._id } }, { useFindAndModify: false });
+                return db.Article.findOneAndUpdate({_id: req.body.id }, { $push: { note: dbNote._id } }, { new: true, useFindAndModify: false });
             })
             .then(function (dbArticle) {
                 // If we were able to successfully update an Article, send it back to the client
@@ -84,18 +82,34 @@ module.exports = function (app) {
             });
     });
 
-    app.post("/getNotes", (req, res) => {
-        db.Article.findOne({ _id: req.body.id })
+    app.post("/getNotes", async (req, res) => {
+        db.Article.findById(req.body.id)
             // ..and populate all of the notes associated with it
-            .populate({path: "note", model: "Note"})
-            .then(function (dbArticle) {
+            .populate("note")
+            .exec(function(err, dbArticle) {
                 // If we were able to successfully find an Article with the given id, send it back to the client
-                console.log("RETURN\n" + dbArticle);
-                // res.json(dbArticle);
-            })
-            .catch(function (err) {
-                // If an error occurred, send it to the client
-                res.json(err);
+                res.json(dbArticle);
             });
-    })
+    });
+
+    app.post("/deleteNote", (req, res) => {
+        db.Note.deleteOne({_id: req.body.id})
+        .then(dbNote => {
+            res.status(200).send();
+        });
+    });
+
+    app.get("/clearArticles", (req, res) => {
+        db.Article.updateMany({}, {$set: {active: false}}, {multi: true})
+        .then(response => {
+            res.redirect("/");
+        });
+    });
+
+    app.post("/deleteArticle", (req, res) => {
+        db.Article.deleteOne({_id: req.body.id})
+        .then(dbArticle => {
+            res.status(200).send();
+        });
+    });
 }

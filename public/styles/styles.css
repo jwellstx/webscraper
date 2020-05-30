@@ -54,6 +54,21 @@ body {
     font-size: 180%
 }
 
-.noteIt, .saveIt {
+.noteIt, .saveIt, .deleteArticle {
     float: right;
+}
+
+.noteCSS {
+    border: 1px solid black;
+    margin: 10px;
+    padding: 10px;
+}
+
+.summary {
+    font-family: 'Bangers', sans-serif;
+    font-size: 3vh;
+}
+
+#articleImg {
+    border-radius: 5px;
 }
